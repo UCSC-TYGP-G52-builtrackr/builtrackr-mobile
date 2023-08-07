@@ -1,50 +1,74 @@
-import { StyleSheet, Text, View, Button, TextInput} from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  Image,
+  Pressable,
+  onPress,
+  Button,
+} from 'react-native';
+import Constants from 'expo-constants';
+import React from 'react';
+import {createNativeStackNavigator} from '@react-navigation/native-stack'
+
+// or any pure javascript modules available in npm
+import { Card } from 'react-native-paper';
 
 export default function App() {
+  const [text, onChangeText] = React.useState('');
+  
   return (
-    <View style={styles.appCointainer}>
-      <View style={styles.goalContainer}>
-        <Text style={styles.heading}>Log in to</Text>
-        <Text>BuiltTrackr</Text>
-      </View>
-      <View style={styles.flexView}>
-        <TextInput style={styles.textInput} placeholder="Enter your Email or Username"/> 
-        <TextInput style={styles.textInput} placeholder="Enter your goal!"/> 
-        <Button title="Login"/>
-      </View>
+    <View style={styles.container}>
+      <Text style={styles.title}>Login</Text>
+      <Image style={styles.logo} source={require('./assets/login.jpg')} />
+
+      <TextInput
+        style={styles.input}
+        onChangeText={onChangeText}
+        value={text}
+        placeholder="Enter the email"
+      />
+      <TextInput style={styles.input} placeholder="Enter the password" />
+      <Pressable style={styles.button}>
+        <Text>Login</Text>
+      </Pressable>
+      <Text style={styles.texts}> If you don' t Have account</Text>
     </View>
   );
 }
 
-const styles = StyleSheet.create({ 
-  appCointainer:{
-    flex:1, //now take whole available screen size
-    paddingTop:50,
-    paddingHorizontal:16,
+const styles = StyleSheet.create({
+  texts: {
+    padding: 15,
   },
-  flexView:{
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems:'center',
-    // paddingBottom: 24,
-    // borderBottomWidth: 2,
-    // borderBottomColor: '#198a35',
-  },
-  textInput:{
-    borderWidth: 1,
-    borderColor:'red',
-    width:'70%',
-    marginRight:17 ,
-    padding: 8,
-  },
-  goalContainer:{
-    flex:4
-  },
-  heading:{
+  title: {
     fontWeight: 'bold',
-
-  }
-
-  
+  },
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 24,
+    marginTop: 50,
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    width: 250,
+  },
+  logo: {
+    height: 350,
+    width: 300,
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: '#ffcc00',
+  },
 });
