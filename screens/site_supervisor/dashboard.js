@@ -7,6 +7,7 @@ import {
   Pressable,
   onPress,
   Button,
+  ScrollView
 } from "react-native";
 
 import React from "react";
@@ -27,6 +28,8 @@ const SupervisorDashboard = ({ navigation }) => {
       </View>
       <View style={styles.content}>
         <Text style={styles.subheading}>Work to do</Text>
+        <ScrollView>
+
         <View style={styles.toDoContainer}>
           <View style={styles.checkListContainer}>
             <Text style={styles.task}>
@@ -42,7 +45,45 @@ const SupervisorDashboard = ({ navigation }) => {
             <View style={styles.circle}>
             </View>
           </View>
+          <View style={styles.checkListContainer}>
+            <Text style={styles.task}>
+              Task 2
+            </Text>
+            <View style={styles.circle}>
+            </View>
+          </View>
+          <View style={styles.checkListContainer}>
+            <Text style={styles.task}>
+              Task 2
+            </Text>
+            <View style={styles.circle}>
+            </View>
+          </View>
+          <View style={styles.checkListContainer}>
+            <Text style={styles.task}>
+              Task 2
+            </Text>
+            <View style={styles.circle}>
+            </View>
+          </View>
+          <View style={styles.checkListContainer}>
+            <Text style={styles.task}>
+              Task 2
+            </Text>
+            <View style={styles.circle}>
+            </View>
+          </View>
+
+
+          <View style={styles.checkListContainer}>
+            <Text style={styles.task}>
+              Task 2
+            </Text>
+            <View style={styles.circle}>
+            </View>
+          </View>
         </View>
+        </ScrollView>
       </View>
     </View>
   );
