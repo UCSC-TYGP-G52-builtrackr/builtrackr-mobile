@@ -113,14 +113,6 @@ const styles = StyleSheet.create({
   task:{
     fontSize: 18,
   },
-
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    width: 250,
-  },
   content: {
     padding: 5,
     flex: 2.2,
@@ -130,16 +122,7 @@ const styles = StyleSheet.create({
     height: 200,
     width: 210,
     borderRadius: 100,
-  },
-  button: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-    elevation: 3,
-    backgroundColor: "#ffcc00",
-  },
+  }
 });
 
 export { SupervisorDashboard };
