@@ -3,6 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import { Login } from '../screens/login';
 import { Signup } from '../screens/signup';
+import {SupervisorDashboard} from '../screens/site_supervisor/dashboard';
 
 const Stack = createNativeStackNavigator();
 
@@ -11,6 +12,7 @@ const Stack = createNativeStackNavigator();
   return (
 <NavigationContainer>
   <Stack.Navigator>
+    <Stack.Screen name="Supervisor Dashboard" component={SupervisorDashboard} />
     <Stack.Screen name="Login" component={Login} />
     <Stack.Screen name="Signup" component={Signup} />
   </Stack.Navigator>
