@@ -22,16 +22,39 @@ const CameraComponent = ({ navigation, route }) => {
       aspect:[1,1],
       quality: 1
     });
-    console.log(data)
-  
+    
     if (route.params?.taskProof)
       return navigation.navigate("Task Proof", {
         image: data.assets[0].uri,
     }); 
 
   };
+  
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  }, []);
 
-  const clickPicture=()=>{};
+  const clickPicture = async () => {
+    const data = await camera.takePictureAsync();
+
+    if (route.params?.taskProof)
+      return navigation.navigate("Task Proof", {
+        image: data.uri,
+      });
+    };
+
+  if (hasPermission === null) return <View />;
+
+  if (hasPermission === false)
+    return (
+      <View >
+        <Text>No access to camera</Text>
+      </View>
+    );
+
   return (
     <View style={{
       flex:1,
