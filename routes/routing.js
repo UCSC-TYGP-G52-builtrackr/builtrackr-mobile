@@ -9,18 +9,21 @@ import {CameraComponent} from "../screens/site_supervisor/camera";
 
 const Stack = createNativeStackNavigator();
 
-export default function Routes() {
-  return (
-    <NavigationContainer>
+const Routes = () => {
+  return(
+  <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name='Camera' component={CameraComponent} />
-      <Stack.Screen name='Supervisor Dashboard' component={SupervisorDashboard}/>
+        <Stack.Group>
         <Stack.Screen name='Login' component={Login} />
+        <Stack.Screen name='Supervisor Dashboard' component={SupervisorDashboard}/>
         <Stack.Screen name='Task Proof' component={TaskProof} />
-        
+        <Stack.Screen name='Camera' component={CameraComponent} />
         <Stack.Screen name='Signup' component={Signup} />
-
+      </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+
+export default Routes;
+        
