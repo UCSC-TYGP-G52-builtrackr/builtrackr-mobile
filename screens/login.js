@@ -31,7 +31,7 @@ import { StatusBar } from 'expo-status-bar';
         <Pressable style={styles.button}>
           <Text>Login</Text>
         </Pressable>
-        <Text style={styles.texts}> If you don' t Have account<Button title = 'Signup' onPress = {()=>navigation.navigate("Signup")}/></Text>
+        <Text style={styles.texts}> If you don' t Have account <Text onPress = {()=>navigation.navigate("Signup")} style ={styles.title}> Signup</Text></Text>
       </View>
     );
   }
