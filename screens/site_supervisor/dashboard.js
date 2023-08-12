@@ -7,12 +7,12 @@ import {
   Pressable,
   onPress,
   Button,
-  ScrollView
+  ScrollView,
+  TouchableOpacity,
 } from "react-native";
 
 import React from "react";
 import { StatusBar } from "expo-status-bar";
-
 
 const SupervisorDashboard = ({ navigation }) => {
   const [text, onChangeText] = React.useState("");
@@ -29,8 +29,8 @@ const SupervisorDashboard = ({ navigation }) => {
       <View style={styles.content}>
         <Text style={styles.subheading}>Work to do</Text>
         <ScrollView>
-
         <View style={styles.toDoContainer}>
+        <TouchableOpacity onPress={()=>navigation.navigate("Task Proof")}>
           <View style={styles.checkListContainer}>
             <Text style={styles.task}>
               Task 1
@@ -38,6 +38,23 @@ const SupervisorDashboard = ({ navigation }) => {
             <View style={styles.circle}>
             </View>
           </View>
+        </TouchableOpacity>
+        <View style={styles.checkListContainer}>
+          <Text style={styles.task}>
+            Task 2
+          </Text>
+          <View style={styles.circle}>
+          </View>
+        </View>
+        <View style={styles.checkListContainer}>
+          <Text style={styles.task}>
+            Task 2
+          </Text>
+          <View style={styles.circle}>
+          </View>
+        </View>
+          
+          
           <View style={styles.checkListContainer}>
             <Text style={styles.task}>
               Task 2
@@ -45,34 +62,7 @@ const SupervisorDashboard = ({ navigation }) => {
             <View style={styles.circle}>
             </View>
           </View>
-          <View style={styles.checkListContainer}>
-            <Text style={styles.task}>
-              Task 2
-            </Text>
-            <View style={styles.circle}>
-            </View>
-          </View>
-          <View style={styles.checkListContainer}>
-            <Text style={styles.task}>
-              Task 2
-            </Text>
-            <View style={styles.circle}>
-            </View>
-          </View>
-          <View style={styles.checkListContainer}>
-            <Text style={styles.task}>
-              Task 2
-            </Text>
-            <View style={styles.circle}>
-            </View>
-          </View>
-          <View style={styles.checkListContainer}>
-            <Text style={styles.task}>
-              Task 2
-            </Text>
-            <View style={styles.circle}>
-            </View>
-          </View>
+          
 
 
           <View style={styles.checkListContainer}>
@@ -85,6 +75,9 @@ const SupervisorDashboard = ({ navigation }) => {
         </View>
         </ScrollView>
       </View>
+      
+
+      
     </View>
   );
 };
