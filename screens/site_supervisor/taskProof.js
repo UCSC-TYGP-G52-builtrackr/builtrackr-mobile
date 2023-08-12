@@ -17,9 +17,6 @@ const TaskProof = ({ navigation }) => {
   
   return (
     <View style={styles.appContainer}>
-      <View>
-        <Text>Back to navigation</Text>
-      </View>
       <View style={styles.content}>
         <View style={styles.proof}>
           <Text style={styles.title}>

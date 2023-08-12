@@ -5,6 +5,7 @@ import { Login } from "../screens/login";
 import { Signup } from "../screens/signup";
 import { SupervisorDashboard } from "../screens/site_supervisor/dashboard";
 import { TaskProof } from "../screens/site_supervisor/taskProof";
+import {CameraComponent} from "../screens/site_supervisor/camera";
 
 const Stack = createNativeStackNavigator();
 
@@ -12,9 +13,11 @@ export default function Routes() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name='Task Proof' component={TaskProof} />
+        <Stack.Screen name='Camera' component={CameraComponent} />
+      <Stack.Screen name='Supervisor Dashboard' component={SupervisorDashboard}/>
         <Stack.Screen name='Login' component={Login} />
-        <Stack.Screen name='Supervisor Dashboard' component={SupervisorDashboard}/>
+        <Stack.Screen name='Task Proof' component={TaskProof} />
+        
         <Stack.Screen name='Signup' component={Signup} />
 
       </Stack.Navigator>
