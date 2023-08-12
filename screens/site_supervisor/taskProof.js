@@ -1,27 +1,56 @@
-import {
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  Image,
-  Pressable,
-  onPress,
-  Button,
-} from "react-native";
-
-import React from "react";
+import {Text,View,StyleSheet,TextInput,Image,Pressable,TouchableOpacity} from "react-native";
+import React, { useEffect, useState } from "react";
+import { Avatar,Button } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 
-const TaskProof = ({ navigation }) => {
-  const [text, onChangeText] = React.useState("");
-  
+const TaskProof = ({ navigation, route }) => {
+  const [image, setImage]=useState("");
+  useEffect(() => {
+    if (route.params?.image) setImage(route.params.image);
+  }, [route.params]);
+
+
   return (
     <View style={styles.appContainer}>
       <View style={styles.content}>
-        <View style={styles.proof}>
+        <View style={{flex:2,alignItems:"center"}}>
           <Text style={styles.title}>
             Task 1
           </Text>
+          <Image 
+          style={{
+            borderWidth:2,
+            borderColor:"black",
+            borderRadius:30,
+            backgroundColor:"#ffcc00",
+            width:300,
+            height:250,
+            alignSelf:"center",
+            resizeMode:"contain"
+          }}
+          source={{
+            uri: image ? image : null,
+          }}
+          />
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() =>
+              navigation.navigate("Camera",{taskProof:true})
+            }
+          >
+            <Avatar.Icon
+              icon={"camera"}
+              style={{
+                
+                backgroundColor: "white",
+                margin: 10,
+               
+
+              }}
+              size={50}
+              color={"black"}
+            />
+          </TouchableOpacity>
         </View>
         <View style={styles.comment}>
           <TextInput style={styles.input} placeholder="Enter the comment" />
@@ -43,55 +72,23 @@ const styles = StyleSheet.create({
   comment:{
     flex:2
   },
-
-  proof:{
-    flex:2,
-    alignItems:"center",
-  },
   appContainer: {
     flex: 1,
     padding: 0,
     marginTop: 0,
   },
-  texts: {
-    padding: 15,
-  },
-  heading: {
-    padding: 20,
-    fontSize: 20,
-    fontWeight: "bold",
-  },
   title: {
     fontWeight: "bold",
     fontSize: 18,
-  },
-  profile: {
-    flex: 1.5,
-    alignItems: "center",
-    borderBottomWidth: 2,
-    borderBottomColor: "#ffc800",
-  },
-
-  checkListContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 5,
-    fontSize: 20,
-  },
-
-  circle: {
-    height: 20,
-    width: 20,
-    borderRadius: 100,
-    borderWidth: 2,
-    borderColor: "black",
-    backgroundColor: "white",
+    paddingBottom:10,
   },
   input: {
     flex:1,
     margin: 12,
     borderWidth: 1,
     padding: 10,
+    borderRadius:30,
+    alignContent:'flex-start',
   },
   content: {
     flex: 1,

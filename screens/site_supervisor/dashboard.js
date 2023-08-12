@@ -15,7 +15,6 @@ import React from "react";
 import { StatusBar } from "expo-status-bar";
 
 const SupervisorDashboard = ({ navigation }) => {
-  const [text, onChangeText] = React.useState("");
 
   return (
     <View style={styles.appContainer}>
