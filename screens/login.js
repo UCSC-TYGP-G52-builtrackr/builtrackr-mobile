@@ -8,6 +8,7 @@ import {
     onPress,
     Button,
   } from 'react-native';
+  import { useNavigation } from "@react-navigation/native";
 
   import React from 'react';
 import { StatusBar } from 'expo-status-bar';
@@ -15,6 +16,7 @@ import { StatusBar } from 'expo-status-bar';
   
   const Login =({navigation})=> {
     const [text, onChangeText] = React.useState('');
+    const navigate = useNavigation();
     
     return (
       <View style={styles.container}>
@@ -28,10 +30,13 @@ import { StatusBar } from 'expo-status-bar';
           placeholder="Enter the email"
         />
         <TextInput style={styles.input} placeholder="Enter the password" />
-        <Pressable style={styles.button}>
+        <Pressable onPress={() =>navigation.navigate("Supervisor Dashboard")
+            } style={styles.button}>
           <Text>Login</Text>
         </Pressable>
-        <Text style={styles.texts}> If you don' t Have account <Text onPress = {()=>navigation.navigate("Signup")} style ={styles.title}> Signup</Text></Text>
+        <Button title = 'Signup' onPress = {()=>navigation.navigate("Signup")}/>
+         <Text style={styles.texts}> If you don' t Have account <Text onPress = {()=>navigation.navigate("Signup")} style ={styles.title}> Signup</Text></Text>
+
       </View>
     );
   }
