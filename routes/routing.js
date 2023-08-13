@@ -6,22 +6,27 @@ import { Signup } from "../screens/signup";
 import { SupervisorDashboard } from "../screens/site_supervisor/dashboard";
 import { TaskProof } from "../screens/site_supervisor/taskProof";
 import {CameraComponent} from "../screens/site_supervisor/camera";
+import  Home  from '../screens/Home';
 
 const Stack = createNativeStackNavigator();
 
 const Routes = () => {
   return(
   <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+  screenOptions={{headerShown: false}}
+  >
         <Stack.Group>
         <Stack.Screen name='Login' component={Login} />
         <Stack.Screen name='Supervisor Dashboard' component={SupervisorDashboard}/>
         <Stack.Screen name='Task Proof' component={TaskProof} />
         <Stack.Screen name='Camera' component={CameraComponent} />
         <Stack.Screen name='Signup' component={Signup} />
+          <Stack.Screen name="Home" component={Home} />
       </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
+
   );
 }
 
