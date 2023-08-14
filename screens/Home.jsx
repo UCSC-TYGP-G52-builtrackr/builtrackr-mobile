@@ -6,18 +6,15 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 
-const Home = () => {
+const Home = ({navigation}) => {
   return (
-    
     <ScrollView style  = {styles.container}>
-  
-    
-
-     <Image source={require('../assets/home.png')} style  = {styles.image} />
+    <Image source={require('../assets/home.png')} style  = {styles.image} />
      <Text style={styles.text}>Welcome to <Text style  ={{fontWeight:'800'}}>BuilTrackr</Text></Text>       
      <Text style={styles.slogan}>We are here to help </Text>
      <Text style= {styles.slogans}> with your construction sites</Text>
-     <TouchableOpacity style  = {styles.button}><Text>Explore</Text></TouchableOpacity>
+     <TouchableOpacity onPress={()=>navigation.navigate("Login")}
+      style  = {styles.button}><Text>Explore</Text></TouchableOpacity>
      <Text style={styles.texts}>Our Services</Text>
      <Image source={require('../assets/Construction_w.png')} style  = {styles.images} />
      <View style= {{alignItems:"center", padding:10}}>

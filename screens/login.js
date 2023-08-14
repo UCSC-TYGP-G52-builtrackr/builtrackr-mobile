@@ -1,23 +1,11 @@
-import {
-    Text,
-    View,
-    StyleSheet,
-    TextInput,
-    Image,
-    Pressable,
-    onPress,
-    Button,
-  } from 'react-native';
-  import { useNavigation } from "@react-navigation/native";
-
-  import React from 'react';
+import {Text,View,StyleSheet,TextInput,Image,Pressable,onPress,Button} from 'react-native';
+import { useNavigation } from "@react-navigation/native";
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
  
-  
   const Login =({navigation})=> {
     const [text, onChangeText] = React.useState('');
     const navigate = useNavigation();
-    
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Login</Text>
@@ -34,9 +22,6 @@ import { StatusBar } from 'expo-status-bar';
             } style={styles.button}>
           <Text>Login</Text>
         </Pressable>
-        <Button title = 'Signup' onPress = {()=>navigation.navigate("Signup")}/>
-         <Text style={styles.texts}> If you don' t Have account <Text onPress = {()=>navigation.navigate("Signup")} style ={styles.title}> Signup</Text></Text>
-
       </View>
     );
   }
@@ -47,6 +32,8 @@ import { StatusBar } from 'expo-status-bar';
     },
     title: {
       fontWeight: 'bold',
+      fontSize: 30,
+      paddingBottom: 10
     },
     container: {
       alignItems: 'center',
@@ -58,6 +45,7 @@ import { StatusBar } from 'expo-status-bar';
       height: 40,
       margin: 12,
       borderWidth: 1,
+      borderRadius: 10,
       padding: 10,
       width: 250,
     },

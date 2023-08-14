@@ -17,12 +17,12 @@ const Routes = () => {
   screenOptions={{headerShown: false}}
   >
         <Stack.Group>
-        <Stack.Screen name='Login' component={Login} />
-        <Stack.Screen name='Supervisor Dashboard' component={SupervisorDashboard}/>
-        <Stack.Screen name='Task Proof' component={TaskProof} />
-        <Stack.Screen name='Camera' component={CameraComponent} />
-        <Stack.Screen name='Signup' component={Signup} />
           <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name='Login' component={Login} />
+          <Stack.Screen name='Supervisor Dashboard' component={SupervisorDashboard}/>
+          <Stack.Screen name='Task Proof' component={TaskProof} />
+          <Stack.Screen name='Camera' component={CameraComponent} />
+          <Stack.Screen name='Signup' component={Signup} />
       </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
