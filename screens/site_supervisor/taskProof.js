@@ -1,4 +1,4 @@
-import {Text,View,StyleSheet,TextInput,Image,Pressable,TouchableOpacity,ScrollView} from "react-native";
+import {Text,View,StyleSheet,TextInput,Image,Pressable,TouchableOpacity} from "react-native";
 import React, { useEffect, useState } from "react";
 import { Avatar,Button } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
@@ -11,7 +11,6 @@ const TaskProof = ({ navigation, route }) => {
 
 
   return (
-    <ScrollView>
     <View style={styles.appContainer}>
       <View style={styles.content}>
         <View style={{flex:2,alignItems:"center"}}>
@@ -57,15 +56,12 @@ const TaskProof = ({ navigation, route }) => {
           <TextInput style={styles.input} placeholder="Enter the comment" />
         </View>
         <View style={styles.btn}>
-          <Pressable
-            onPress={() =>navigation.navigate("Supervisor Dashboard")} 
-            style={styles.button}>
+          <Pressable style={styles.button}>
             <Text>Submit</Text>
           </Pressable>
         </View>
       </View>
     </View>
-    </ScrollView>
   );
 };
 
@@ -91,7 +87,7 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
-    borderRadius:20,
+    borderRadius:30,
     alignContent:'flex-start',
   },
   content: {
