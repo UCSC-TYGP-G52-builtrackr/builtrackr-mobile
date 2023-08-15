@@ -23,7 +23,7 @@ const TaskProof = ({ navigation, route }) => {
             borderWidth:2,
             borderColor:"black",
             borderRadius:30,
-            backgroundColor:"#ffcc00",
+            backgroundColor:"white",
             width:300,
             height:250,
             alignSelf:"center",
@@ -42,12 +42,9 @@ const TaskProof = ({ navigation, route }) => {
             <Avatar.Icon
               icon={"camera"}
               style={{
-                
                 backgroundColor: "white",
                 margin: 10,
-               
-
-              }}
+               }}
               size={50}
               color={"black"}
             />
@@ -99,7 +96,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
     marginBottom: 20,
-    marginTop: 5,
+    marginTop: 60,
     padding: 20,
     borderWidth: 1,
     borderColor: "#ffc800",
