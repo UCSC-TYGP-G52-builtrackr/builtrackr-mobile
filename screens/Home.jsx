@@ -14,7 +14,7 @@ const Home = ({navigation}) => {
      <Text style={styles.slogan}>We are here to help </Text>
      <Text style= {styles.slogans}> with your construction sites</Text>
      <TouchableOpacity onPress={()=>navigation.navigate("Login")}
-      style  = {styles.button}><Text>Explore</Text></TouchableOpacity>
+      style  = {styles.button}><Text>Login</Text></TouchableOpacity>
      <Text style={styles.texts}>Our Services</Text>
      <Image source={require('../assets/Construction_w.png')} style  = {styles.images} />
      <View style= {{alignItems:"center", padding:10}}>
