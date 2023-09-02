@@ -20,15 +20,10 @@ const Stack = createNativeStackNavigator();
 const Routes = () => {
   return(
   <NavigationContainer>
-    <Stack.Navigator initialRouteName="Drawer">
+    <Stack.Navigator>
       <Stack.Screen options={{headerShown: false}} name="Home" component={Home} />
-    <Stack.Screen
-          name="Drawer"
-          component={DrawerNavigator}
-          options={{headerShown: false}}
-        />
       <Stack.Screen name='Login' component={Login} />
-      <Stack.Screen name='Supervisor Dashboard' component={SupervisorDashboard}/>
+      <Stack.Screen options={{headerShown: false}}name='Supervisor Dashboard' component={DrawerNavigator}/>
       <Stack.Screen name='Task Proof' component={TaskProof} />
       <Stack.Screen name='Camera' component={CameraComponent} />
       <Stack.Screen name='Signup' component={Signup} />
