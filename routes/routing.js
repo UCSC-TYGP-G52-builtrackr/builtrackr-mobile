@@ -10,31 +10,11 @@ import { SupervisorDashboard } from "../screens/site_supervisor/dashboard";
 import { TaskProof } from "../screens/site_supervisor/taskProof";
 import {CameraComponent} from "../screens/site_supervisor/camera";
 import  Home  from '../screens/Home';
+import DrawerNavigator from '../screens/sideDrawer';
 
 
 const Stack = createNativeStackNavigator();
-const Drawer = createDrawerNavigator();
 
-function DrawerNavigator() {
-  return (
-    <Drawer.Navigator>
-      <Drawer.Screen
-        name="Task Proof"
-        component={TaskProof}
-        options={{
-          title: 'Task Proof',
-        }}
-      />
-      <Drawer.Screen
-        name="Supervisor Dashboard"
-        component={SupervisorDashboard}
-        options={{
-          title: 'Supervisor Dashboard',
-        }}
-      />
-    </Drawer.Navigator>
-  );
-}
 
 
 const Routes = () => {
