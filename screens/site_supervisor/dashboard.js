@@ -26,7 +26,7 @@ const SupervisorDashboard = ({ navigation }) => {
         <Text style={styles.heading}>Welcome back Supervisor Rumindu</Text>
       </View>
       <View style={styles.content}>
-        <Text style={styles.subheading}>Work to do</Text>
+        <Text style={styles.subheading}>Works to do</Text>
         <ScrollView>
         <View style={styles.toDoContainer}>
         <TouchableOpacity onPress={()=>navigation.navigate("Task Proof")}>
