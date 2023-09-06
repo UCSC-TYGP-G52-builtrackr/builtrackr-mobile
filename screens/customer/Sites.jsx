@@ -4,10 +4,41 @@ import React from "react";
 import { useRoute } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { AntDesign } from '@expo/vector-icons';
+import { useState, useEffect } from "react";
   
 const Sites = ({ navigation }) => {
   const route = useRoute();
   const customerID = route.params.customerID;
+  const [customerSites, setCustomerSites] = useState([]);
+
+  useEffect(() => {
+    const fetchCustomerSites = async () => {
+      try {
+        const response = await fetch(
+          "http://192.168.8.100:4000/api/site/getCustomerSites",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ customerID }), // Sending ID in the request body
+          }
+        );
+        if (response.status === 200) {
+          const jsonData = await response.json();
+          console.log("Data received:", jsonData);
+          // console.log(jsonData);
+          setCustomerSites(jsonData);
+        } else {
+          // console.log(response.status);
+          console.log("Error fetching data. Status:", response.status);
+        }
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+    fetchCustomerSites();
+  }, [customerID]);
 
   return (
     <View style={styles.appContainer}>
@@ -17,7 +48,8 @@ const Sites = ({ navigation }) => {
           <Image style={styles.sitePic} source={require('../../assets/havelock.jpg')} />
         </View> */}
         <View style={{alignItems: 'center'}}>
-          <View style={{ position: 'relative', height: 300, width: 300,}}>
+        {customerSites.map((customerSite) => (
+          <View key={customerSite.site_id} style={{ position: 'relative', height: 300, width: 300, marginBottom: 20 }}>
             <ImageBackground
               source={require('../../assets/havelock.jpg')} // Use the actual image source
               style={{ flex: 1, resizeMode: 'cover', justifyContent: 'center' }}
@@ -31,7 +63,7 @@ const Sites = ({ navigation }) => {
                 }}
               >
                 <Text style={{ fontSize: 24, color: 'white', textAlign: 'center' }}>
-                  Site Name
+                  {customerSite.site_name}
                 </Text>
                 <TouchableOpacity
                   onPress={() => console.log('More Info Clicked')} // Handle navigation here
@@ -52,6 +84,7 @@ const Sites = ({ navigation }) => {
               </View>
             </ImageBackground>
         </View>
+        ))}
         </View>
       </View>
     </View>
