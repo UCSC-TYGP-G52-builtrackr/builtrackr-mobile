@@ -37,7 +37,7 @@ import { saveData } from './storage';
             body: JSON.stringify(loginData),
           }
         );
-
+          
         if (response.status === 200) {
           // Parse the response JSON data
           const data = await response.json();
@@ -50,7 +50,7 @@ import { saveData } from './storage';
               navigation.navigate('Sites');
             } 
             else if (data.userType === 'supervisor') {
-              saveData('employeeNo', data.employeeID.toString());
+              saveData('employeeNo', data.employeeNo.toString());
               // Navigate to the "Supervisor Dashboard" for supervisors
               navigation.navigate("Supervisor Dashboard", { employeeID: data.employeeID });
             }
