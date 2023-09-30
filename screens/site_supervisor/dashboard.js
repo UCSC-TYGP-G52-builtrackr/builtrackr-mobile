@@ -1,11 +1,56 @@
-import {Text,View,StyleSheet,TextInput,Image,Pressable,onPress,Button,ScrollView,TouchableOpacity,
-} from "react-native";
-
-import React from "react";
+import {Text,View,StyleSheet,Image,TouchableOpacity,FlatList} from "react-native";
+import { getData } from "../storage";
+import {useEffect,useState} from "react";
 import { StatusBar } from "expo-status-bar";
 
 const SupervisorDashboard = ({ navigation }) => {
+  
+  const [employeeNo, setEmployeeNo] = useState(0);
+  const [taskDetails, setTaskDetails] = useState([]);
+  //using for run 2ng useEffect after fully complete 1st useEffect. Otherwise at initial render task details won't load
+  const [firstEffectCompleted, setFirstEffectCompleted] = useState(false);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getData("employeeNo");
+      if (data !== null) {
+        setEmployeeNo(data);
+        setFirstEffectCompleted(true); // Mark the first effect as completed
+      }
+    };
+    fetchData();
+  }, []);
+  
+
+  useEffect(() => {
+    if (firstEffectCompleted) { // Only run this effect if the first effect is completed
+      const taskDetail = async () => {
+        try {
+          const response = await fetch(
+            "http://192.168.55.223:4000/api/task/getTaskOfSupervisor",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ employeeNo: employeeNo }),
+            }
+          );
+          if (response.status === 200) {
+            const jsonData = await response.json();
+            setTaskDetails(jsonData);
+          } 
+        } catch (error) {
+          console.log(error.message);
+        }
+      };
+      taskDetail();
+    }
+  },
+  //to execute useEffect only when employeeNo and firstEffectCompleted state variables value change
+  [employeeNo, firstEffectCompleted]);
+
+  
   return (
     <View style={styles.appContainer}>
       <View style={styles.profile}>
@@ -17,56 +62,21 @@ const SupervisorDashboard = ({ navigation }) => {
       </View>
       <View style={styles.content}>
         <Text style={styles.subheading}>Works to do</Text>
-        <ScrollView>
         <View style={styles.toDoContainer}>
-        <TouchableOpacity onPress={()=>navigation.navigate("Task Proof")}>
-          <View style={styles.checkListContainer}>
-            <Text style={styles.task}>
-              Task 1
-            </Text>
-            <View style={styles.circle}>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <View style={styles.checkListContainer}>
-          <Text style={styles.task}>
-            Task 2
-          </Text>
-          <View style={styles.circle}>
-          </View>
+          <FlatList
+            keyExtractor={(item) => item.id}
+            data={taskDetails} 
+            renderItem={({ item }) => ( 
+              <TouchableOpacity onPress={()=>navigation.navigate("Task Proof",{taskId:item.id})}>
+                <View style={styles.checkListContainer}>
+                  <Text style={styles.task}>{item.task}</Text>
+                  <View style={styles.circle}></View>
+                </View>
+              </TouchableOpacity>
+            )}
+          />
         </View>
-        <View style={styles.checkListContainer}>
-          <Text style={styles.task}>
-            Task 2
-          </Text>
-          <View style={styles.circle}>
-          </View>
-        </View>
-          
-          
-          <View style={styles.checkListContainer}>
-            <Text style={styles.task}>
-              Task 2
-            </Text>
-            <View style={styles.circle}>
-            </View>
-          </View>
-          
-
-
-          <View style={styles.checkListContainer}>
-            <Text style={styles.task}>
-              Task 2
-            </Text>
-            <View style={styles.circle}>
-            </View>
-          </View>
-        </View>
-        </ScrollView>
       </View>
-      
-
-      
     </View>
   );
 };
@@ -103,7 +113,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: "#ffc800",
   },
-
   toDoContainer: {
     flex: 1,
     marginLeft: 20,
@@ -124,7 +133,6 @@ const styles = StyleSheet.create({
     padding:5,
     fontSize: 20,
   },
-
   circle:{
     height:20,
     width:20,

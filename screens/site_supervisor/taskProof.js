@@ -4,10 +4,44 @@ import { Avatar,Button } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 
 const TaskProof = ({ navigation, route }) => {
-  const [image, setImage]=useState("");
+  
+  const [image, setImage]=useState(null);
+  const[taskId,setTaskId]=useState(route.params.taskId);
+  const[imageName,setImageName]=useState('')
+  console.log(taskId)
+
+    const handleSubmit=async()=>{
+      console.log('subniteke')
+      const formData = new FormData();
+        formData.append('image', {uri:image.image});
+      try {
+        const response = await fetch(
+          "http://192.168.55.223:4000/api/upload/task",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            body: formData,
+          }
+        );
+        if (response.status === 200) {
+          const jsonData = await response.json();
+          setImageName(jsonData.data);
+          console.log(jsonData.data)
+          
+        }
+      } catch (error) {
+        console.log(error.message);
+        console.log('catch block');
+      }
+      // navigation.navigate("Supervisor Dashboard")
+    }
+  
   useEffect(() => {
-    if (route.params?.image) setImage(route.params.image);
+    if (route.params) setImage(route.params);
   }, [route.params]);
+
 
 
   return (
@@ -30,7 +64,7 @@ const TaskProof = ({ navigation, route }) => {
             resizeMode:"contain"
           }}
           source={{
-            uri: image ? image : null,
+            uri: image? image.image : null,
           }}
           />
           <TouchableOpacity
@@ -55,7 +89,7 @@ const TaskProof = ({ navigation, route }) => {
         </View>
         <View style={styles.btn}>
           <Pressable
-            onPress={() =>navigation.navigate("Supervisor Dashboard")} 
+            onPress={handleSubmit} 
             style={styles.button}>
             <Text>Submit</Text>
           </Pressable>

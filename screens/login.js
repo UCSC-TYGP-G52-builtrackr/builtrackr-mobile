@@ -1,4 +1,4 @@
-import {Text, View, StyleSheet, TextInput, Image, Pressable, TouchableOpacity, KeyboardAvoidingView, ScrollView, onPress,Button} from 'react-native';
+import {Text, View, StyleSheet, TextInput, Image, Pressable,TouchableOpacity,ScrollView} from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
@@ -50,7 +50,7 @@ import { saveData } from './storage';
               navigation.navigate('Sites');
             } 
             else if (data.userType === 'supervisor') {
-              saveData('employeeNo', data.employeeID.toString()); 
+              saveData('employeeNo', data.employeeID.toString());
               // Navigate to the "Supervisor Dashboard" for supervisors
               navigation.navigate("Supervisor Dashboard", { employeeID: data.employeeID });
             }
