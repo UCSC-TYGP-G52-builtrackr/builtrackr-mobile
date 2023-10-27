@@ -3,13 +3,14 @@ import { getData } from "../storage";
 import {useEffect,useState} from "react";
 import { StatusBar } from "expo-status-bar";
 
-const SupervisorDashboard = ({ navigation }) => {
+const SupervisorDashboard = ({ navigation,route }) => {
   
   const [employeeNo, setEmployeeNo] = useState(0);
   const [taskDetails, setTaskDetails] = useState([]);
   //using for run 2ng useEffect after fully complete 1st useEffect. Otherwise at initial render task details won't load
   const [firstEffectCompleted, setFirstEffectCompleted] = useState(false);
-
+  const reverse=route.params||1
+  
   useEffect(() => {
     const fetchData = async () => {
       const data = await getData("employeeNo");
@@ -19,15 +20,14 @@ const SupervisorDashboard = ({ navigation }) => {
       }
     };
     fetchData();
-  }, []);
+  }, [reverse]);
   
-
   useEffect(() => {
     if (firstEffectCompleted) { // Only run this effect if the first effect is completed
       const taskDetail = async () => {
         try {
           const response = await fetch(
-            "http://192.168.55.223:4000/api/task/getTaskOfSupervisor",
+            "http://192.168.224.223:4000/api/task/getTaskOfSupervisor",
             {
               method: "POST",
               headers: {
@@ -48,9 +48,8 @@ const SupervisorDashboard = ({ navigation }) => {
     }
   },
   //to execute useEffect only when employeeNo and firstEffectCompleted state variables value change
-  [employeeNo, firstEffectCompleted]);
+  [employeeNo, firstEffectCompleted, reverse]);
 
-  
   return (
     <View style={styles.appContainer}>
       <View style={styles.profile}>
@@ -67,7 +66,7 @@ const SupervisorDashboard = ({ navigation }) => {
             keyExtractor={(item) => item.id}
             data={taskDetails} 
             renderItem={({ item }) => ( 
-              <TouchableOpacity onPress={()=>navigation.navigate("Task Proof",{taskId:item.id})}>
+              <TouchableOpacity onPress={()=>navigation.navigate("Task Proof",{taskId:item.id,task:item.task})}>
                 <View style={styles.checkListContainer}>
                   <Text style={styles.task}>{item.task}</Text>
                   <View style={styles.circle}></View>
