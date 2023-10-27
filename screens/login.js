@@ -28,7 +28,7 @@ import { saveData } from './storage';
         };
 
         const response = await fetch(
-          "http://192.168.55.223:4000/api/site/checkCustomer",
+          "http://192.168.224.223:4000/api/site/checkCustomer",
           {
             method: "POST",
             headers: {
