@@ -2,45 +2,75 @@ import {Text,View,StyleSheet,TextInput,Image,Pressable,TouchableOpacity,ScrollVi
 import React, { useEffect, useState } from "react";
 import { Avatar,Button } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
+import client from "../../api/client";
 
-const TaskProof = ({ navigation, route }) => {
+const TaskProof = ({navigation, route }) => {
   
   const [image, setImage]=useState(null);
   const[taskId,setTaskId]=useState(route.params.taskId);
-  const[imageName,setImageName]=useState('')
-  console.log(taskId)
+  const task=route.params?.task || 'No data received';
+  const[comment,setComment]=useState('');
 
     const handleSubmit=async()=>{
-      console.log('subniteke')
       const formData = new FormData();
-        formData.append('image', {uri:image.image});
+      formData.append('image', {
+        uri: image.image,
+        type: 'image/jpeg', // Adjust the type according to your image format
+        name: 'image.jpg'
+      });
       try {
-        const response = await fetch(
-          "http://192.168.55.223:4000/api/upload/task",
+        const response = await client.post(
+          '/api/upload/task',formData,
           {
-            method: "POST",
             headers: {
               "Content-Type": "multipart/form-data",
             },
-            body: formData,
           }
         );
+        
         if (response.status === 200) {
-          const jsonData = await response.json();
-          setImageName(jsonData.data);
-          console.log(jsonData.data)
-          
-        }
+          const imageName=response.data;
+          try {
+            const response = await fetch(
+              "http://192.168.224.223:4000/api/task/addTaskProofOfSupervisor",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ 
+                  taskId:taskId,
+                  imageName:imageName,
+                  comment:comment }),
+              }
+            );
+
+          }
+          catch (error) {
+            
+          }
+          }
       } catch (error) {
-        console.log(error.message);
-        console.log('catch block');
-      }
-      // navigation.navigate("Supervisor Dashboard")
+        console.error('Axios error:', error);
+      
+        // Check if there are additional error details available
+        if (error.response) {
+          console.error('Response data:', error.response.data);
+          console.error('Response status:', error.response.status);
+          console.error('Response headers:', error.response.headers);
+        } else if (error.request) {
+          console.error('Request:', error.request);
+        } else {
+          console.error('Other error:', error.message);
+        }
     }
+    navigation.navigate('SupervisorDashboard', { reverse: 0 });
+  }
   
   useEffect(() => {
-    if (route.params) setImage(route.params);
+    if (route.params.image) setImage(route.params);
   }, [route.params]);
+  //console.log(route.params)
 
 
 
@@ -50,7 +80,7 @@ const TaskProof = ({ navigation, route }) => {
       <View style={styles.content}>
         <View style={{flex:2,alignItems:"center"}}>
           <Text style={styles.title}>
-            Task 1
+            {task}
           </Text>
           <Image 
           style={{
@@ -70,7 +100,7 @@ const TaskProof = ({ navigation, route }) => {
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() =>
-              navigation.navigate("Camera",{taskProof:true})
+              navigation.navigate("Camera",{taskProof:true, task:task, taskId:taskId})
             }
           >
             <Avatar.Icon
@@ -85,7 +115,7 @@ const TaskProof = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
         <View style={styles.comment}>
-          <TextInput style={styles.input} placeholder="Enter the comment" />
+          <TextInput style={styles.input} placeholder="Enter the comment"  onChangeText={(value) => setComment(value)} />
         </View>
         <View style={styles.btn}>
           <Pressable
