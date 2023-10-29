@@ -1,10 +1,10 @@
-import {Text, View, StyleSheet, TextInput, Image, Pressable, TouchableOpacity, KeyboardAvoidingView, ScrollView, onPress,Button} from 'react-native';
-
+import {Text, View, StyleSheet, TextInput, Image, Pressable,TouchableOpacity,ScrollView} from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from "react";
 import { AntDesign } from '@expo/vector-icons';
+import { saveData } from './storage';
  
   const Login =({navigation})=> {
     // const [text, onChangeText] = React.useState('');
@@ -28,7 +28,7 @@ import { AntDesign } from '@expo/vector-icons';
         };
 
         const response = await fetch(
-          "http://192.168.8.100:4000/api/site/checkCustomer",
+          "http://192.168.224.223:4000/api/site/checkCustomer",
           {
             method: "POST",
             headers: {
@@ -37,18 +37,20 @@ import { AntDesign } from '@expo/vector-icons';
             body: JSON.stringify(loginData),
           }
         );
-
+          
         if (response.status === 200) {
           // Parse the response JSON data
           const data = await response.json();
-    
           // Check if the login was successful based on the data received from the server
           if (data.success) {
             // Navigate to the "Sites" page
             if (data.userType === 'customer') {
               // Navigate to the "Sites" page for customers
-              navigation.navigate('Sites', { customerID: data.customerID });
-            } else if (data.userType === 'supervisor') {
+              saveData('customerID', data.customerID.toString());
+              navigation.navigate('Sites');
+            } 
+            else if (data.userType === 'supervisor') {
+              saveData('employeeNo', data.employeeNo.toString());
               // Navigate to the "Supervisor Dashboard" for supervisors
               navigation.navigate("Supervisor Dashboard", { employeeID: data.employeeID });
             }
