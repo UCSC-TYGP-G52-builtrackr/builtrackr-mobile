@@ -2,10 +2,12 @@ import {Text,View,StyleSheet,Image,TouchableOpacity,FlatList} from "react-native
 import { getData } from "../storage";
 import {useEffect,useState} from "react";
 import { StatusBar } from "expo-status-bar";
+import baseUrl from '../../api/fetch';
 
 const SupervisorDashboard = ({ navigation,route }) => {
   
   const [employeeNo, setEmployeeNo] = useState(0);
+  const [employeeName, setEmployeeName] = useState("");
   const [taskDetails, setTaskDetails] = useState([]);
   //using for run 2ng useEffect after fully complete 1st useEffect. Otherwise at initial render task details won't load
   const [firstEffectCompleted, setFirstEffectCompleted] = useState(false);
@@ -14,8 +16,10 @@ const SupervisorDashboard = ({ navigation,route }) => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getData("employeeNo");
+      const data1 = await getData("employeeName");
       if (data !== null) {
         setEmployeeNo(data);
+        setEmployeeName(data1);
         setFirstEffectCompleted(true); // Mark the first effect as completed
       }
     };
@@ -27,7 +31,7 @@ const SupervisorDashboard = ({ navigation,route }) => {
       const taskDetail = async () => {
         try {
           const response = await fetch(
-            "http://192.168.224.223:4000/api/task/getTaskOfSupervisor",
+            `${baseUrl}/api/task/getTaskOfSupervisor`,
             {
               method: "POST",
               headers: {
@@ -57,7 +61,7 @@ const SupervisorDashboard = ({ navigation,route }) => {
           style={styles.logo}
           source={require("../../assets/supervisor-profile.png")}
         />
-        <Text style={styles.heading}>Welcome back Supervisor Rumindu</Text>
+        <Text style={styles.heading}>Welcome Back Supervisor {employeeName}</Text>
       </View>
       <View style={styles.content}>
         <Text style={styles.subheading}>Works to do</Text>
@@ -102,7 +106,7 @@ const styles = StyleSheet.create({
   },
   checkListContainer: {
     flexDirection: "row",
-  },
+  },  
   title: {
     fontWeight: "bold",
   },

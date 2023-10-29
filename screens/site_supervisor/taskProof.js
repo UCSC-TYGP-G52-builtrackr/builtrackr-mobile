@@ -2,7 +2,8 @@ import {Text,View,StyleSheet,TextInput,Image,Pressable,TouchableOpacity,ScrollVi
 import React, { useEffect, useState } from "react";
 import { Avatar,Button } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
-import client from "../../api/client";
+import axios from "../../api/axios";
+import baseUrl from '../../api/fetch';
 
 const TaskProof = ({navigation, route }) => {
   
@@ -19,7 +20,7 @@ const TaskProof = ({navigation, route }) => {
         name: 'image.jpg'
       });
       try {
-        const response = await client.post(
+        const response = await axios.post(
           '/api/upload/task',formData,
           {
             headers: {
@@ -32,7 +33,7 @@ const TaskProof = ({navigation, route }) => {
           const imageName=response.data;
           try {
             const response = await fetch(
-              "http://192.168.224.223:4000/api/task/addTaskProofOfSupervisor",
+              `${baseUrl}/api/task/addTaskProofOfSupervisor`,
               {
                 method: "POST",
                 headers: {
