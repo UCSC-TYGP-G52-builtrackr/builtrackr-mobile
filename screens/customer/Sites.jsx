@@ -1,4 +1,5 @@
 import { Text, View, StyleSheet, TextInput, Image, ImageBackground, Pressable, onPress, Button, ScrollView, TouchableOpacity, } from "react-native";
+import { useNavigation } from '@react-navigation/native';
   
 import React from "react";
 import { useRoute } from "@react-navigation/native";
@@ -11,9 +12,15 @@ const Sites = ({ navigation }) => {
   const customerID = route.params.customerID;
   const [customerSites, setCustomerSites] = useState([]);
 
+  const handleNavigation = (id) => {
+    // Use navigation to navigate to another screen
+    navigation.navigate('MySite', { siteID: id }); // Replace 'YourScreenName' with the name of your target screen
+  };
+
   useEffect(() => {
     const fetchCustomerSites = async () => {
       try {
+        console.log("customer's id", customerID);
         const response = await fetch(
           "http://192.168.8.100:4000/api/site/getCustomerSites",
           {
@@ -43,7 +50,7 @@ const Sites = ({ navigation }) => {
   return (
     <View style={styles.appContainer}>
       <View style={styles.profile}>
-        <Text style={styles.heading}>My Sites : Customer ID - {customerID}</Text>
+        <Text style={styles.heading}>My Sites</Text>
         {/* <View style={{alignItems: 'center'}}>
           <Image style={styles.sitePic} source={require('../../assets/havelock.jpg')} />
         </View> */}
@@ -66,7 +73,7 @@ const Sites = ({ navigation }) => {
                   {customerSite.site_name}
                 </Text>
                 <TouchableOpacity
-                  onPress={() => console.log('More Info Clicked')} // Handle navigation here
+                  onPress={() => handleNavigation(customerSite.site_id)} // Handle navigation here
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
