@@ -3,8 +3,12 @@ import { useNavigation } from "@react-navigation/native";
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from "react";
+import Loader from './loader';
 import { AntDesign } from '@expo/vector-icons';
 import { saveData } from './storage';
+import baseUrl from '../api/fetch';
+
+  
  
   const Login =({navigation})=> {
     // const [text, onChangeText] = React.useState('');
@@ -12,6 +16,7 @@ import { saveData } from './storage';
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigation();
+    const [loading, setLoading] = useState(false);
 
     const clearErrorAndInputs = () => {
       setErrorMessage(''); // Clear the error message
@@ -20,6 +25,7 @@ import { saveData } from './storage';
     };
 
     const handleLogin = async () => {
+      setLoading(true);
       try {
         // Make a POST request to your server's authentication endpoint
         const loginData = {
@@ -28,7 +34,7 @@ import { saveData } from './storage';
         };
 
         const response = await fetch(
-          "http://192.168.224.223:4000/api/site/checkCustomer",
+          `${baseUrl}/api/site/checkCustomer`,
           {
             method: "POST",
             headers: {
@@ -41,6 +47,7 @@ import { saveData } from './storage';
         if (response.status === 200) {
           // Parse the response JSON data
           const data = await response.json();
+          console.log('login eke',data)
           // Check if the login was successful based on the data received from the server
           if (data.success) {
             // Navigate to the "Sites" page
@@ -50,35 +57,47 @@ import { saveData } from './storage';
               navigation.navigate('Sites');
             } 
             else if (data.userType === 'supervisor') {
-              saveData('employeeNo', data.employeeNo.toString());
+              const supervisorData = {
+                supervisorID: data.employeeNo,
+                employeeName: data.employeeName,
+                // Add more key-value pairs as needed
+              };
+              saveData(supervisorData);
               // Navigate to the "Supervisor Dashboard" for supervisors
-              navigation.navigate("Supervisor Dashboard", { employeeID: data.employeeID });
+              navigation.navigate("Supervisor Dashboard");
             }
           } else {
             // Handle failed login (e.g., show an error message to the user)
             setErrorMessage(data.message);
             // navigation.navigate("Supervisor Dashboard");
           }
-        } else {
+          setLoading(false);
+        } 
+        else {
           // Handle non-successful HTTP responses (e.g., 404 Not Found, 500 Internal Server Error)
           console.error('HTTP error:', response.status, response.statusText);
+          setLoading(false);
         }
       } catch (error) {
         // Handle API request error
         console.error('API request error:', error);
+        setLoading(false);
       }
     };
 
     return (
+      
       <ScrollView>
-      <View style={styles.container}>
-        <Text style={styles.title}>Login</Text>
-        <Image style={styles.logo} source={require('../assets/login.jpg')} />
-  
+    <View style={styles.container}>
+      <Text style={styles.title}>Login</Text>
+      <Image style={styles.logo} source={require('../assets/login.jpg')} />
+
+      
         {/* Display the error message */}
         {errorMessage ? (
           <View style={styles.errorDisplay}>
             <TextInput
+              style={{ color: 'red', width: 200 }}
               value={errorMessage}
               editable={false}
               placeholder="Error"
@@ -102,13 +121,16 @@ import { saveData } from './storage';
           placeholder="Enter the password"
           secureTextEntry 
         />
-        {/* <Pressable onPress={() =>navigation.navigate("Supervisor Dashboard")
-            } style={styles.button}>
-          <Text>Login</Text>
-        </Pressable> */}
-        <Pressable onPress={handleLogin} style={styles.button}>
-          <Text>Login</Text>
-        </Pressable>
+        {/* Display the loader while loading is true */}
+        {/* if loader is false display login*/}
+        {loading ?
+          (<Loader />) 
+          :<Pressable onPress={handleLogin} style={styles.button}>
+            <Text>Login</Text>
+          </Pressable>
+        }
+        
+        
       </View>
       </ScrollView>
     );
@@ -121,7 +143,8 @@ import { saveData } from './storage';
     title: {
       fontWeight: 'bold',
       fontSize: 30,
-      paddingBottom: 10
+      paddingBottom: 10,
+      paddingTop:60
     },
     container: {
       alignItems: 'center',
