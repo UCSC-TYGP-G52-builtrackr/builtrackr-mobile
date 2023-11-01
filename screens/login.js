@@ -1,4 +1,5 @@
-import {Text, View, StyleSheet, TextInput, Image, Pressable,TouchableOpacity,ScrollView} from 'react-native';
+import {Text, View, StyleSheet, TextInput, Image, Pressable, TouchableOpacity, KeyboardAvoidingView, ScrollView, onPress,Button} from 'react-native';
+
 import { useNavigation } from "@react-navigation/native";
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
@@ -43,11 +44,10 @@ import baseUrl from '../api/fetch';
             body: JSON.stringify(loginData),
           }
         );
-          
+
         if (response.status === 200) {
           // Parse the response JSON data
           const data = await response.json();
-          console.log('login eke',data)
           // Check if the login was successful based on the data received from the server
           if (data.success) {
             // Navigate to the "Sites" page
