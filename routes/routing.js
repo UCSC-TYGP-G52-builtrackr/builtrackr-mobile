@@ -11,6 +11,7 @@ import DrawerNavigator from '../screens/sideDrawer';
 
 //customer UI components
 import { Sites } from '../screens/customer/Sites'
+import { MySite } from '../screens/customer/MySite'
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,7 @@ const Routes = () => {
 
       {/* customer UIS */}
       <Stack.Screen name='Sites' component={Sites} />
+      <Stack.Screen name='MySite' component={MySite} />
     </Stack.Navigator>
   </NavigationContainer>
   );
