@@ -32,7 +32,8 @@ const TaskProof = ({navigation, route }) => {
           const imageName=response.data;
           try {
             const response = await fetch(
-              "http://192.168.224.223:4000/api/task/addTaskProofOfSupervisor",
+              // "http://192.168.224.223:4000/api/task/addTaskProofOfSupervisor",
+              "http://192.168.8.100:4000/api/task/addTaskProofOfSupervisor",
               {
                 method: "POST",
                 headers: {

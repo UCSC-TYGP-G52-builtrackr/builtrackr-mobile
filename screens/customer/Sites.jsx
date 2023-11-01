@@ -22,7 +22,7 @@ const Sites = ({ navigation }) => {
       try {
         console.log("customer's id", customerID);
         const response = await fetch(
-          "http://192.168.8.100:4000/api/site/getCustomerSites",
+          "http://192.168.43.122:4000/api/site/getCustomerSites",
           {
             method: "POST",
             headers: {
@@ -48,6 +48,7 @@ const Sites = ({ navigation }) => {
   }, [customerID]);
 
   return (
+    <ScrollView>
     <View style={styles.appContainer}>
       <View style={styles.profile}>
         <Text style={styles.heading}>My Sites</Text>
@@ -95,6 +96,7 @@ const Sites = ({ navigation }) => {
         </View>
       </View>
     </View>
+    </ScrollView>
   );
 };
 
