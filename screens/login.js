@@ -52,9 +52,9 @@ import baseUrl from '../api/fetch';
           if (data.success) {
             // Navigate to the "Sites" page
             if (data.userType === 'customer') {
+              console.log(data)
               // Navigate to the "Sites" page for customers
-              saveData('customerID', data.customerID.toString());
-              navigation.navigate('Sites');
+              navigation.navigate('Sites', { customerID: data.customerID });
             } 
             else if (data.userType === 'supervisor') {
               const supervisorData = {

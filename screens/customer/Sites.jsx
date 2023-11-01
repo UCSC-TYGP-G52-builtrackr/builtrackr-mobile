@@ -22,7 +22,7 @@ const Sites = ({ navigation }) => {
       try {
         console.log("customer's id", customerID);
         const response = await fetch(
-          "http://192.168.43.122:4000/api/site/getCustomerSites",
+          `${baseUrl}/api/site/getCustomerSites`,
           {
             method: "POST",
             headers: {

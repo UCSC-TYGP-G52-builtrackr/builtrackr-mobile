@@ -30,7 +30,7 @@ const MySite = ({ navigation }) => {
     const fetchSiteData = async () => {
       try {
         const response = await fetch(
-          "http://192.168.43.122:4000/api/site/getSingleSite",
+          `${baseUrl}/api/site/getSingleSite`,
           {
             method: "POST",
             headers: {
@@ -63,7 +63,7 @@ const MySite = ({ navigation }) => {
     const fetchSiteImgPath = async () => {
       try {
         const response = await fetch(
-          "http://192.168.43.122:4000/api/site/getSiteImage",
+          `${baseUrl}/api/site/getSiteImage`,
           {
             method: "POST",
             headers: {
