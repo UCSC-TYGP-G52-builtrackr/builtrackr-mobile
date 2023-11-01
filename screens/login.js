@@ -122,16 +122,14 @@ import baseUrl from '../api/fetch';
           secureTextEntry 
         />
         {/* Display the loader while loading is true */}
-        {/* if loader is false display login*/}
+        {/* if loader is false display login button*/}
         {loading ?
           (<Loader />) 
           :<Pressable onPress={handleLogin} style={styles.button}>
             <Text>Login</Text>
           </Pressable>
         }
-        
-        
-      </View>
+        </View>
       </ScrollView>
     );
   }

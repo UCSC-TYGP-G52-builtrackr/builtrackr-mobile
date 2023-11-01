@@ -1,7 +1,7 @@
 import {Text,View,StyleSheet,TextInput,Image,Pressable,TouchableOpacity,ScrollView} from "react-native";
 import React, { useEffect, useState } from "react";
 import { Avatar,Button } from "react-native-paper";
-import { StatusBar } from "expo-status-bar";
+import Loader from "../loader";
 import axios from "../../api/axios";
 import baseUrl from '../../api/fetch';
 
@@ -10,9 +10,10 @@ const TaskProof = ({navigation, route }) => {
   const [image, setImage]=useState(null);
   const[taskId,setTaskId]=useState(route.params.taskId);
   const task=route.params?.task || 'No data received';
-  const[comment,setComment]=useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit=async()=>{
+      setIsLoading(true);
       const formData = new FormData();
       formData.append('image', {
         uri: image.image,
@@ -28,7 +29,6 @@ const TaskProof = ({navigation, route }) => {
             },
           }
         );
-        
         if (response.status === 200) {
           const imageName=response.data;
           try {
@@ -41,31 +41,32 @@ const TaskProof = ({navigation, route }) => {
                 },
                 body: JSON.stringify({ 
                   taskId:taskId,
-                  imageName:imageName,
-                  comment:comment }),
+                  imageName:imageName, }),
               }
             );
-
           }
           catch (error) {
-            
+          console.log(error.message)
           }
-          }
-      } catch (error) {
+        }
+      } 
+      catch (error) {
         console.error('Axios error:', error);
-      
         // Check if there are additional error details available
         if (error.response) {
           console.error('Response data:', error.response.data);
           console.error('Response status:', error.response.status);
           console.error('Response headers:', error.response.headers);
-        } else if (error.request) {
+        }
+        else if (error.request) {
           console.error('Request:', error.request);
-        } else {
+        } 
+        else {
           console.error('Other error:', error.message);
         }
-    }
-    navigation.navigate('SupervisorDashboard', { reverse: 0 });
+      }
+      setIsLoading(false);
+      navigation.navigate('SupervisorDashboard', { reverse: 0 });
   }
   
   useEffect(() => {
@@ -115,15 +116,22 @@ const TaskProof = ({navigation, route }) => {
             />
           </TouchableOpacity>
         </View>
-        <View style={styles.comment}>
-          <TextInput style={styles.input} placeholder="Enter the comment"  onChangeText={(value) => setComment(value)} />
-        </View>
         <View style={styles.btn}>
-          <Pressable
-            onPress={handleSubmit} 
-            style={styles.button}>
-            <Text>Submit</Text>
-          </Pressable>
+          {isLoading ? ( // Display loader when isLoading is true
+            <Loader />
+          ) 
+          : 
+          (
+            <Pressable
+              onPress={image === null ? undefined : handleSubmit}
+              style={({ pressed }) => [
+                styles.button,
+                image === null ? styles.disabledButton : null,
+                pressed ? styles.pressedButton : null,
+              ]}
+            >
+              <Text style={styles.buttonText}>Submit</Text>
+            </Pressable>)}
         </View>
       </View>
     </View>
@@ -184,6 +192,13 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     elevation: 3,
     backgroundColor: "#ffcc00",
+  },
+  disabledButton: {
+    backgroundColor: 'gray', 
+    opacity: 0.6, 
+  },
+  pressedButton: {
+    backgroundColor: 'darkorange', // Change the style when pressed
   },
 });
 

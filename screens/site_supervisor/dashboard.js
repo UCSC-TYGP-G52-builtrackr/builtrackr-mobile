@@ -9,13 +9,15 @@ const SupervisorDashboard = ({ navigation,route }) => {
   const [employeeNo, setEmployeeNo] = useState(0);
   const [employeeName, setEmployeeName] = useState("");
   const [taskDetails, setTaskDetails] = useState([]);
+  console.log("taskDetails",taskDetails);
   //using for run 2ng useEffect after fully complete 1st useEffect. Otherwise at initial render task details won't load
   const [firstEffectCompleted, setFirstEffectCompleted] = useState(false);
-  const reverse=route.params||1
+  const reverse=route.params||1;
   
   useEffect(() => {
     const fetchData = async () => {
       const data = await getData("employeeNo");
+      console.log('data',data)
       const data1 = await getData("employeeName");
       if (data !== null) {
         setEmployeeNo(data);
@@ -24,7 +26,7 @@ const SupervisorDashboard = ({ navigation,route }) => {
       }
     };
     fetchData();
-  }, [reverse]);
+  }, []);
   
   useEffect(() => {
     if (firstEffectCompleted) { // Only run this effect if the first effect is completed
@@ -42,8 +44,16 @@ const SupervisorDashboard = ({ navigation,route }) => {
           );
           if (response.status === 200) {
             const jsonData = await response.json();
-            setTaskDetails(jsonData);
-          } 
+            if (jsonData !== 0) {
+              setTaskDetails(jsonData);
+              console.log('taskDetails', jsonData);
+            } else {
+              setTaskDetails([]);
+              console.log('JSON data is empty or null');
+            }
+          } else {
+            console.log('Request failed with status code', response.status);
+          }
         } catch (error) {
           console.log(error.message);
         }
@@ -65,21 +75,27 @@ const SupervisorDashboard = ({ navigation,route }) => {
       </View>
       <View style={styles.content}>
         <Text style={styles.subheading}>Works to do</Text>
-        <View style={styles.toDoContainer}>
-          <FlatList
-            keyExtractor={(item) => item.id}
-            data={taskDetails} 
-            renderItem={({ item }) => ( 
-              <TouchableOpacity onPress={()=>navigation.navigate("Task Proof",{taskId:item.id,task:item.task})}>
-                <View style={styles.checkListContainer}>
-                  <Text style={styles.task}>{item.task}</Text>
-                  <View style={styles.circle}></View>
-                </View>
-              </TouchableOpacity>
-            )}
-          />
+        {taskDetails.length > 0 ? (
+          <View style={styles.toDoContainer}>
+            <FlatList
+              keyExtractor={(item) => item.task_id}
+              data={taskDetails} 
+              renderItem={({ item }) => ( 
+                <TouchableOpacity onPress={()=>navigation.navigate("Task Proof",{taskId:item.task_id,task:item.title})}>
+                  <View style={styles.checkListContainer}>
+                    <Text style={styles.task}>{item.title}</Text>
+                    <View style={styles.circle}></View>
+                  </View>
+                </TouchableOpacity>
+              )}
+            />
+          </View>)
+          :(<View style={styles.toDoContainerEmpty}>
+              <Text style = {{fontSize:18,fontWeight:'bold'}}>No tasks to show</Text></View>)
+        }
+          
         </View>
-      </View>
+      
     </View>
   );
 };
@@ -118,6 +134,22 @@ const styles = StyleSheet.create({
   },
   toDoContainer: {
     flex: 1,
+    marginLeft: 20,
+    marginRight:20,
+    marginBottom:20,
+    marginTop:5,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: "#ffc800",
+    backgroundColor: "#ffeb9a",
+    borderRadius: 20,
+    elevation: 10,
+    shadowColor: "blue",
+  },
+  toDoContainerEmpty: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
     marginLeft: 20,
     marginRight:20,
     marginBottom:20,
