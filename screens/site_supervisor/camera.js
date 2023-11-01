@@ -9,15 +9,18 @@ const CameraComponent = ({ navigation, route }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(CameraType.back);
   const [camera, setCamera] = useState(null);
-{/*/Getting images from galary*/}
+  const task=route.params.task;
+  const taskId=route.params.taskId;
+  
+{/*/Getting images from glary*/}
   const openImagePicker = async () => {
-    const permissionResult =
-      await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false)
       return alert("Permission to access gallery is required");
 
     const data = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing:true,
       aspect:[1,1],
       quality: 1
@@ -25,11 +28,11 @@ const CameraComponent = ({ navigation, route }) => {
     
     if (route.params?.taskProof)
       return navigation.navigate("Task Proof", {
-        image: data.assets[0].uri,
+        image: data.assets[0].uri,task:task,taskId:taskId
     }); 
-
   };
   
+  //camera
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -42,11 +45,11 @@ const CameraComponent = ({ navigation, route }) => {
 
     if (route.params?.taskProof)
       return navigation.navigate("Task Proof", {
-        image: data.uri,
+        image: data.uri,task:task,taskId:taskId
       });
     };
-
-  if (hasPermission === null) return <View />;
+  
+    if (hasPermission === null) return <View />;
 
   if (hasPermission === false)
     return (

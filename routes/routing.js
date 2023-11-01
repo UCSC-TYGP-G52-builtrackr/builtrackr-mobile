@@ -19,7 +19,7 @@ const Routes = () => {
   <NavigationContainer>
     <Stack.Navigator>
       <Stack.Screen options={{headerShown: false}} name="Home" component={Home} />
-      <Stack.Screen name='Login' component={Login} />
+      <Stack.Screen options={{headerShown: false}} name='Login' component={Login} />
       <Stack.Screen options={{headerShown: false}}name='Supervisor Dashboard' component={DrawerNavigator}/>
       <Stack.Screen name='Task Proof' component={TaskProof} />
       <Stack.Screen name='Camera' component={CameraComponent} />
