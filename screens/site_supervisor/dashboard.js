@@ -1,20 +1,68 @@
-import {
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  Image,
-  Pressable,
-  onPress,
-  Button,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
-
-import React from "react";
+import {Text,View,StyleSheet,Image,TouchableOpacity,FlatList} from "react-native";
+import { getData } from "../storage";
+import {useEffect,useState} from "react";
 import { StatusBar } from "expo-status-bar";
+import baseUrl from '../../api/fetch';
 
-const SupervisorDashboard = ({ navigation }) => {
+const SupervisorDashboard = ({ navigation,route }) => {
+  
+  const [employeeNo, setEmployeeNo] = useState(0);
+  const [employeeName, setEmployeeName] = useState("");
+  const [taskDetails, setTaskDetails] = useState([]);
+  console.log("taskDetails",taskDetails);
+  //using for run 2ng useEffect after fully complete 1st useEffect. Otherwise at initial render task details won't load
+  const [firstEffectCompleted, setFirstEffectCompleted] = useState(false);
+  const reverse=route.params||1;
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getData("employeeNo");
+      console.log('data',data)
+      const data1 = await getData("employeeName");
+      if (data !== null) {
+        setEmployeeNo(data);
+        setEmployeeName(data1);
+        setFirstEffectCompleted(true); // Mark the first effect as completed
+      }
+    };
+    fetchData();
+  }, []);
+  
+  useEffect(() => {
+    if (firstEffectCompleted) { // Only run this effect if the first effect is completed
+      const taskDetail = async () => {
+        try {
+          const response = await fetch(
+            `${baseUrl}/api/task/getTaskOfSupervisor`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ employeeNo: employeeNo }),
+            }
+          );
+          if (response.status === 200) {
+            const jsonData = await response.json();
+            if (jsonData !== 0) {
+              setTaskDetails(jsonData);
+              console.log('taskDetails', jsonData);
+            } else {
+              setTaskDetails([]);
+              console.log('JSON data is empty or null');
+            }
+          } else {
+            console.log('Request failed with status code', response.status);
+          }
+        } catch (error) {
+          console.log(error.message);
+        }
+      };
+      taskDetail();
+    }
+  },
+  //to execute useEffect only when employeeNo and firstEffectCompleted state variables value change
+  [employeeNo, firstEffectCompleted, reverse]);
 
   return (
     <View style={styles.appContainer}>
@@ -23,59 +71,30 @@ const SupervisorDashboard = ({ navigation }) => {
           style={styles.logo}
           source={require("../../assets/supervisor-profile.png")}
         />
-        <Text style={styles.heading}>Welcome back Supervisor Rumindu</Text>
+        <Text style={styles.heading}>Welcome Back Supervisor {employeeName}</Text>
       </View>
       <View style={styles.content}>
         <Text style={styles.subheading}>Works to do</Text>
-        <ScrollView>
-        <View style={styles.toDoContainer}>
-        <TouchableOpacity onPress={()=>navigation.navigate("Task Proof")}>
-          <View style={styles.checkListContainer}>
-            <Text style={styles.task}>
-              Task 1
-            </Text>
-            <View style={styles.circle}>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <View style={styles.checkListContainer}>
-          <Text style={styles.task}>
-            Task 2
-          </Text>
-          <View style={styles.circle}>
-          </View>
-        </View>
-        <View style={styles.checkListContainer}>
-          <Text style={styles.task}>
-            Task 2
-          </Text>
-          <View style={styles.circle}>
-          </View>
-        </View>
+        {taskDetails.length > 0 ? (
+          <View style={styles.toDoContainer}>
+            <FlatList
+              keyExtractor={(item) => item.task_id}
+              data={taskDetails} 
+              renderItem={({ item }) => ( 
+                <TouchableOpacity onPress={()=>navigation.navigate("Task Proof",{taskId:item.task_id,task:item.title})}>
+                  <View style={styles.checkListContainer}>
+                    <Text style={styles.task}>{item.title}</Text>
+                    <View style={styles.circle}></View>
+                  </View>
+                </TouchableOpacity>
+              )}
+            />
+          </View>)
+          :(<View style={styles.toDoContainerEmpty}>
+              <Text style = {{fontSize:18,fontWeight:'bold'}}>No tasks to show</Text></View>)
+        }
           
-          
-          <View style={styles.checkListContainer}>
-            <Text style={styles.task}>
-              Task 2
-            </Text>
-            <View style={styles.circle}>
-            </View>
-          </View>
-          
-
-
-          <View style={styles.checkListContainer}>
-            <Text style={styles.task}>
-              Task 2
-            </Text>
-            <View style={styles.circle}>
-            </View>
-          </View>
         </View>
-        </ScrollView>
-      </View>
-      
-
       
     </View>
   );
@@ -103,7 +122,7 @@ const styles = StyleSheet.create({
   },
   checkListContainer: {
     flexDirection: "row",
-  },
+  },  
   title: {
     fontWeight: "bold",
   },
@@ -113,9 +132,24 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: "#ffc800",
   },
-
   toDoContainer: {
     flex: 1,
+    marginLeft: 20,
+    marginRight:20,
+    marginBottom:20,
+    marginTop:5,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: "#ffc800",
+    backgroundColor: "#ffeb9a",
+    borderRadius: 20,
+    elevation: 10,
+    shadowColor: "blue",
+  },
+  toDoContainerEmpty: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
     marginLeft: 20,
     marginRight:20,
     marginBottom:20,
@@ -134,7 +168,6 @@ const styles = StyleSheet.create({
     padding:5,
     fontSize: 20,
   },
-
   circle:{
     height:20,
     width:20,

@@ -9,6 +9,9 @@ import {CameraComponent} from "../screens/site_supervisor/camera";
 import  Home  from '../screens/Home';
 import DrawerNavigator from '../screens/sideDrawer';
 
+//customer UI components
+import { Sites } from '../screens/customer/Sites'
+
 const Stack = createNativeStackNavigator();
 
 const Routes = () => {
@@ -16,11 +19,14 @@ const Routes = () => {
   <NavigationContainer>
     <Stack.Navigator>
       <Stack.Screen options={{headerShown: false}} name="Home" component={Home} />
-      <Stack.Screen name='Login' component={Login} />
+      <Stack.Screen options={{headerShown: false}} name='Login' component={Login} />
       <Stack.Screen options={{headerShown: false}}name='Supervisor Dashboard' component={DrawerNavigator}/>
       <Stack.Screen name='Task Proof' component={TaskProof} />
       <Stack.Screen name='Camera' component={CameraComponent} />
       <Stack.Screen name='Signup' component={Signup} />
+
+      {/* customer UIS */}
+      <Stack.Screen name='Sites' component={Sites} />
     </Stack.Navigator>
   </NavigationContainer>
   );
