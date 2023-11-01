@@ -19,7 +19,7 @@ const DrawerNavigator=()=>{
         name="Tools"
         component={ToolInventory}
         options={{
-          title: 'Tools',
+          title: 'Site Tools',
         }}
       />
 
